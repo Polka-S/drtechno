@@ -1,0 +1,8 @@
+2026-03-20 14:01:17 - app.utils - ERROR - Error fetching top products: type object 'Product' has no attribute 'accessories'
+2026-03-20 14:10:57 - app.utils - ERROR - Error fetching top products: product_id
+2026-03-20 14:12:40 - app.utils - ERROR - Error fetching top products: product_id
+2026-03-20 14:14:06 - app.utils - INFO - Retrieved top 30 products.
+2026-03-20 14:14:06 - app.utils - INFO - Retrieved top 30 products.
+2026-03-20 17:23:39 - app.utils - WARNING - Brand 'No' has been deleted.
+2026-03-20 17:23:39 - app.utils - INFO - Retrieved top 30 products.
+2026-03-20 17:23:39 - app.utils - INFO - Retrieved top 30 products.

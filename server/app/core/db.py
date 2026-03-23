@@ -17,3 +17,9 @@ class Base(DeclarativeBase):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

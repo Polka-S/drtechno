@@ -1,20 +1,21 @@
+import sys, os
+
+sys.path.insert(0, os.getcwd())
+
+from fastapi import FastAPI
 from sqlalchemy.orm import Session
 
-from .core.db import SessionLocal
-from .logger import setup_logging
-from .services import delete_brand, get_top_products
+from app.core.db import SessionLocal
+from app.logger import setup_logging
+from app.routers import products_router
+
 
 setup_logging()
-db: Session = SessionLocal()
 
+app = FastAPI()
 
-if __name__ == "__main__":
-    try:
-        top_products = get_top_products(db, limit=30)
-        for product in top_products:
-            print(product)
-    finally:
-        db.close()
+app.include_router(products_router)
+
 
 
     

@@ -4,10 +4,11 @@ import pprint
 import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import urljoin, urlparse, parse_qs
 
 
 class Product:
@@ -212,45 +213,82 @@ def load_json(wait: WebDriverWait, driver: webdriver) -> None:
 
 
 def parse_images(wait: WebDriverWait, driver: webdriver) -> None:
-    os.makedirs("images", exist_ok=True)
+    os.makedirs("../client/public/products", exist_ok=True)
     
-    links = [line.strip() for line in open("links.txt", "r").readlines() if line.strip()]
+    with open("links.txt", "r") as f:
+        links = [line.strip() for line in f if line.strip()]
     
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
     }
 
     for link in links:
-        driver.get(link)
-        wait.until(EC.presence_of_element_located((By.CLASS_NAME, "product_content")))
-        soup = BeautifulSoup(driver.page_source, "html.parser")
-
-        photos = soup.select(".mini_slider2 ul li a")
-        
         parsed = urlparse(link)
         product_id = parse_qs(parsed.query).get('Id', ['unknown'])[0]
-        product_dir = os.path.join("images", product_id)
+        if product_id == 'unknown':
+            product_id = parsed.path.strip('/').replace('/', '_') or 'unknown'
+        product_dir = os.path.join("../client/public/products", product_id)
+        
+        if os.path.exists(product_dir) and os.listdir(product_dir):
+            print(f"Папка {product_dir} уже содержит изображения, пропускаем")
+            continue
+        
         os.makedirs(product_dir, exist_ok=True)
 
-        for idx, photo in enumerate(photos, start=1):
-            href = photo.get('href')
-            if not href:
-                continue
-                
-            photo_url = "https://drtechno.ru/" + href
+        try:
+            driver.get(link)
+            wait.until(EC.presence_of_element_located((By.CLASS_NAME, "product_content")))
             
-            ext = os.path.splitext(href)[1] or '.jpg'
-            filename = f"{product_id}_{idx}{ext}"
-            filepath = os.path.join(product_dir, f"{idx}{ext}")
-            
-            print(f"Скачиваю: {photo_url}")
             try:
-                response = requests.get(photo_url, headers=headers, timeout=10, verify=False)
-                if response.status_code == 200:
-                    with open(filepath, 'wb') as f:
-                        f.write(response.content)
-                    print(f"Сохранено: {filepath}")
-                else:
-                    print(f"Ошибка {response.status_code}: {photo_url}")
-            except Exception as e:
-                print(f"Ошибка скачивания {photo_url}: {e}")
+                wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "a.highslide")))
+            except TimeoutException:
+                print(f"На странице {link} не найдено ссылок highslide (возможно, нет фото)")
+                if os.path.exists(product_dir) and not os.listdir(product_dir):
+                    os.rmdir(product_dir)
+                continue
+            
+            all_highslide_links = driver.find_elements(By.CSS_SELECTOR, "a.highslide")
+            
+            product_photo_links = []
+            for elem in all_highslide_links:
+                onclick = elem.get_attribute('onclick') or ''
+                if 'slideshowGroup: 2' in onclick:
+                    product_photo_links.append(elem)
+            
+            print(f"На {link} найдено {len(product_photo_links)} фотографий товара")
+            
+            if not product_photo_links:
+                print(f"Нет фотографий товара (slideshowGroup: 2) на {link}")
+                if os.path.exists(product_dir) and not os.listdir(product_dir):
+                    os.rmdir(product_dir)
+                continue
+            
+            for idx, elem in enumerate(product_photo_links, start=1):
+                href = elem.get_attribute('href')
+                if not href:
+                    continue
+                
+                photo_url = urljoin("https://drtechno.ru/", href)
+                ext = os.path.splitext(href)[1] or '.jpg'
+                filepath = os.path.join(product_dir, f"{idx}{ext}")
+                
+                try:
+                    response = requests.get(photo_url, headers=headers, timeout=10, verify=False)
+                    if response.status_code == 200:
+                        with open(filepath, 'wb') as f:
+                            f.write(response.content)
+                        print(f"Сохранено: {filepath}")
+                    else:
+                        print(f"Ошибка {response.status_code}: {photo_url}")
+                except Exception as e:
+                    print(f"Ошибка скачивания {photo_url}: {e}")
+            
+            if os.path.exists(product_dir) and not os.listdir(product_dir):
+                os.rmdir(product_dir)
+                
+        except Exception as e:
+            print(f"Ошибка обработки страницы {link}: {e}")
+            if os.path.exists(product_dir) and not os.listdir(product_dir):
+                os.rmdir(product_dir)
+            continue
+

@@ -27,7 +27,7 @@ const Footer = () => {
                 </li>
               </ul>
             </div>
-            <div className={`content-right ${generalColsStyles}`}>
+            <div className={`content-right ${generalColsStyles} text-right`}>
               <h6>Оставайтесь на связи</h6>
               <hr className={generalHrStyles} />
               <Link href={`tel:${contacts.tel}`}>

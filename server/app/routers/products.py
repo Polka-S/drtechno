@@ -21,12 +21,16 @@ def get_top_products_route(limit: int = 10, db: Session = Depends(get_db)):
         images_path = get_main_image_path_by_product_id(db, product.id)
         
         variant = product.variants[0] if product.variants else None
+        if not product.slug:
+            print(product)
+            
         result.append(TopProductResponse(
             id=product.id,
             name=product.name,
             slug=product.slug,
             price=variant.price if variant.price else None,
             new_price=variant.new_price,
+            is_in_stock=variant.is_in_stock,
             image_path=images_path,
         ))
     return result

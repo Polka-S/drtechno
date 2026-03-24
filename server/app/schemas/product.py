@@ -1,11 +1,15 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class TopProductResponse(BaseModel):
     id: int
     name: str
     slug: str
-    price: int | None
-    new_price: int | None
-    image_path: str | None
-    
+    price: float | None = None
+    new_price: float | None = Field(None, alias="newPrice")
+    is_in_stock: bool = Field(..., alias="isInStock")
+    image_path: str = Field(..., alias='imagePath')
+
+    model_config = {
+        "populate_by_name": True,
+    }

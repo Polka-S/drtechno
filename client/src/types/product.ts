@@ -6,4 +6,4 @@ export interface ProductBase {
   newPrice: number | null;
   isInStock: boolean;
   imagePath: string;
-}
+};

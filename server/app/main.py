@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from app.core.db import SessionLocal
 from app.logger import setup_logging
-from app.routers import products_router
+from app.routers import products_router, brands_router
 
 
 setup_logging()
@@ -15,6 +15,7 @@ setup_logging()
 app = FastAPI()
 
 app.include_router(products_router)
+app.include_router(brands_router)
 
 
 

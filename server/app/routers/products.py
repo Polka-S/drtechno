@@ -1,9 +1,9 @@
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.core.db import get_db
-from app.schemas.product import TopProductResponse
-from app.services.product import get_top_products, get_main_image_path_by_product_id
+from app.schemas.product import ProductBase
+from app.services.products import get_top_products, get_main_image_path_by_product_id
 
 
 router = APIRouter(
@@ -14,17 +14,15 @@ router = APIRouter(
 
 
 @router.get("/top")
-def get_top_products_route(limit: int = 10, db: Session = Depends(get_db)):
+def get_top_products_route(limit: int = 10, db: Session = Depends(get_db)) -> list[ProductBase]:
     products = get_top_products(db, limit)
     result = []
     for product in products:
         images_path = get_main_image_path_by_product_id(db, product.id)
         
         variant = product.variants[0] if product.variants else None
-        if not product.slug:
-            print(product)
             
-        result.append(TopProductResponse(
+        result.append(ProductBase(
             id=product.id,
             name=product.name,
             slug=product.slug,
@@ -33,4 +31,5 @@ def get_top_products_route(limit: int = 10, db: Session = Depends(get_db)):
             is_in_stock=variant.is_in_stock,
             image_path=images_path,
         ))
+
     return result

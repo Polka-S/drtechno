@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ProductBase } from "@/types/product";
 
 
-const ProductCardCompact = ({ product }: { product: ProductBase }) => {
+const ProductCardCompact = ({ product } : { product: ProductBase }) => {
   const formatPrice = (price: number | null) => {
     if (!price) return null;
     return new Intl.NumberFormat("ru-RU", {
@@ -23,7 +23,7 @@ const ProductCardCompact = ({ product }: { product: ProductBase }) => {
   return (
     <Link
       href={`${product.slug ? `/${product.slug}` : "#"}`}
-      className="group block bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden"
+      className="group block bg-white rounded-xl m-px shadow-sm hover:shadow-2xl transition-shadow duration-300 overflow-hidden"
     >
       <div className="relative aspect-square w-full bg-gray-100 overflow-hidden">
         {product.imagePath ? (
@@ -48,7 +48,7 @@ const ProductCardCompact = ({ product }: { product: ProductBase }) => {
         </h3>
 
         <div className="content flex flex-col gap-2">
-          <div className="price flex flex-wrap items-baseline gap-2 sm:flex-nowrap">
+          <div className="price flex flex-wrap items-baseline justify-between gap-1 sm:flex-nowrap">
             {currentPrice && (
               <span className="text-xl font-bold text-gray-900">
                 {formatPrice(currentPrice)}
@@ -68,7 +68,7 @@ const ProductCardCompact = ({ product }: { product: ProductBase }) => {
           <div className="buy">
             <button
               disabled={!product.isInStock}
-              className="bg-blue-950 text-white cursor-pointer border rounded-xl w-full px-2 py-1 hover:bg-white hover:text-blue-950 transition-colors duration-300 disabled:opacity-50 disabled:hover:bg-blue-950 disabled:hover:text-white">
+              className="bg-gray-800 text-white cursor-pointer border rounded-xl w-full py-1 hover:bg-white hover:text-blue-950 transition-colors duration-300 disabled:opacity-50 disabled:hover:bg-gray-800 disabled:hover:text-white">
                 Купить
             </button>
           </div>

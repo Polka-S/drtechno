@@ -18,7 +18,7 @@ const Header = () => {
   }
 
   return (
-    <header className="border-b border-white md:border-gray-300 fixed w-full top-0 left-0 bg-white">
+    <header className="border-b border-white md:border-gray-300 fixed w-full top-0 left-0 bg-white z-10">
       <div className="my-container">
         <div className={`content flex flex-col items-center justify-between py-2 gap-1 md:flex-row md:items-center ${stylesContentInteractive}`}>
           <div className="logo">

@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 
 
-class TopProductResponse(BaseModel):
+class ProductBase(BaseModel):
     id: int
     name: str
     slug: str

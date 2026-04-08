@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { Search } from 'lucide-react';
 
 import { poppins } from '@/lib/fonts';
-import Nav from './Nav';
+import Nav from '@/components/Nav';
 
 
 const Header = () => {
@@ -22,7 +22,7 @@ const Header = () => {
       <div className="my-container">
         <div className={`content flex flex-col items-center justify-between py-2 gap-1 md:flex-row md:items-center ${stylesContentInteractive}`}>
           <div className="logo">
-            <Link href="#" className='outline-0'>
+            <Link href="/" className='outline-0'>
               <h1 className={`gradient uppercase ${poppins.variable} font-bold`}>Dr Techno</h1>
             </Link>
           </div>

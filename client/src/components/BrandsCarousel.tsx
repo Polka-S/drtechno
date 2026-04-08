@@ -2,10 +2,10 @@
 
 import { useCallback } from "react";
 
-import Carousel from "./Carousel";
 import { BrandBase } from "@/types/brand";
-import SkeletonBrandCard from "./SkeletonBrand";
-import BrandCard from "./BrandCard";
+import Carousel from "@/components/Carousel";
+import SkeletonBrandCard from "@/components/SkeletonBrand";
+import BrandCard from "@/components/BrandCard";
 
 
 const BrandsCarousel = () => {

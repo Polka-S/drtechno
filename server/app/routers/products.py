@@ -13,7 +13,7 @@ router = APIRouter(
 
 
 
-@router.get("/top")
+@router.get("/top", response_model=list[ProductBase])
 def get_top_products_route(limit: int = 10, db: Session = Depends(get_db)) -> list[ProductBase]:
     products = get_top_products(db, limit)
     result = []

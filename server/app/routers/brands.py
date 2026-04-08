@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 
-@router.get("")
+@router.get("", response_model=list[BrandBase])
 def get_brands_route(db: Session = Depends(get_db)) -> list[BrandBase]:
     brands = get_brands(db)
     result = []

@@ -2,9 +2,9 @@
 import { useCallback } from "react";
 
 import { ProductBase } from '@/types/product';
-import ProductCardCompact from "./ProductCardCompact";
-import SkeletonProductCard from "./SkeletonProductCard";
-import Carousel from "./Carousel";
+import ProductCardCompact from "@/components/ProductCardCompact";
+import SkeletonProductCard from "@/components/SkeletonProductCard";
+import Carousel from "@/components/Carousel";
 
 
 const TopProductsCarousel = () => {

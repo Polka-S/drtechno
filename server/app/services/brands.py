@@ -26,6 +26,5 @@ def get_brands(db: Session) -> list[Brand]:
     """
     Возвращает все бренды.
     """
-    query = db.query(Brand).all()
     
-    return query
+    return db.query(Brand).all()

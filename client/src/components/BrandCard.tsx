@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { BrandBase } from "@/types/brand"
+import { BrandBase } from "@/types/brand";
 
 
 const BrandCard = ({ brand } : {brand: BrandBase}) => {

@@ -1,6 +1,8 @@
 import React from "react";
+
 import TopProductsCarousel from "@/components/TopProductsCarousel";
 import BrandsCarousel from "@/components/BrandsCarousel";
+import Modal from "@/components/Modal";
 
 
 export default function MainPage() {
@@ -46,6 +48,7 @@ export default function MainPage() {
             <ListItem highlight="*Хамству бой*" children=" - постоянный контроль за работой операторов" />
             <ListItem highlight="*Доставка*" children=" - всегда точно в срок" />
         </ul>
+        <Modal />
       </div>
     </div>
   )

@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "@/app/globals.css";
 
 import { roboto } from "@/lib/fonts";
 import Footer from "@/components/Footer";
-
+import Header from "@/components/Header";
+import ReduxProvider from '@/app/ReduxProvider';
+import AuthInitializer from "@/app/AuthInitializer";
 
 export const metadata: Metadata = {
   title: "Dr Techno",
@@ -20,8 +22,12 @@ export default function RootLayout({
       <body
         className={`${roboto.variable} antialiased`}
       >
-        {children}
-      <Footer />
+        <ReduxProvider>
+          <AuthInitializer />
+          <Header />
+          {children}
+          <Footer />
+        </ReduxProvider>
       </body>
     </html>
   );

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import Button from "@/components/Button";
 import { ProductBase } from "@/types/product";
 
 
@@ -66,11 +67,7 @@ const ProductCardCompact = ({ product } : { product: ProductBase }) => {
             )}
           </div>
           <div className="buy">
-            <button
-              disabled={!product.isInStock}
-              className="bg-gray-800 text-white cursor-pointer border rounded-xl w-full py-1 hover:bg-white hover:text-blue-950 transition-colors duration-300 disabled:opacity-50 disabled:hover:bg-gray-800 disabled:hover:text-white">
-                Купить
-            </button>
+            <Button disabled={!product.isInStock}>Купить</Button>
           </div>
         </div>
       </div>
